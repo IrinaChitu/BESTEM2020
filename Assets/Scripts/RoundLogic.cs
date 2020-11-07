@@ -19,11 +19,6 @@ public class LandStats: MonoBehaviour
     public int totalHP = 0;
     public int totalDamage = 0;
     public bool frontline = false;
-
-    public LandStats(bool frontline)
-    {
-        this.frontline = frontline;
-    }
 }
 
 public class RoundLogic : MonoBehaviour
@@ -40,14 +35,15 @@ public class RoundLogic : MonoBehaviour
         
         Lane.Add(GameObject.Find("LandPlayer2"));
         Lane[Lane.Count - 1].AddComponent<LandStats>();
-
-        Lane.Add(GameObject.Find("EnemyCastle"));
-        Lane[Lane.Count - 1].AddComponent<LandStats>();
-
-        Lane.Add(GameObject.Find("LandEnemy1"));
-        Lane[Lane.Count - 1].AddComponent<LandStats>();
+        //Lane[Lane.Count - 1].gameObject.GetComponent<LandStats>().frontline = true;
 
         Lane.Add(GameObject.Find("LandEnemy2"));
+        Lane[Lane.Count - 1].AddComponent<LandStats>();
+      
+        Lane.Add(GameObject.Find("LandEnemy1"));
+        Lane[Lane.Count - 1].AddComponent<LandStats>();
+       
+        Lane.Add(GameObject.Find("EnemyCastle"));
         Lane[Lane.Count - 1].AddComponent<LandStats>();
     }
 
@@ -72,26 +68,19 @@ public class RoundLogic : MonoBehaviour
 
     private void MoveUnits() // up to frontline
     {
-
-        // move units from Land1 to Land2
-        for (int i = Lane[1].transform.childCount - 1; i >= 0; i--)
+        for (int cell = Lane.Count-3; cell>=0; cell--)
         {
-            // advance only if all enemy units are dead
-            if (Lane[1].GetComponent<LandStats>().enemyUnits.Count() == 0)
+            // advance units from one land to another
+            for (int i = Lane[cell].transform.childCount - 1; i >= 0; i--)
             {
-                Lane[1].transform.GetChild(i).SetParent(Lane[2].transform, false);
+                // advance only if all enemy units are dead
+                if (Lane[cell].GetComponent<LandStats>().enemyUnits.Count() == 0)
+                {
+                    Lane[cell].transform.GetChild(i).SetParent(Lane[cell+1].transform, false);
+                }
             }
         }
 
-        // move units from castle to Land1
-        for (int i = Lane[0].transform.childCount - 1; i >= 0; i--)
-        {
-            // advance only if all enemy units are dead
-            if (Lane[0].gameObject.GetComponent<LandStats>().enemyUnits.Count() == 0)
-            {
-                Lane[0].transform.GetChild(i).SetParent(Lane[1].transform, false);
-            }
-        }
     }
 
     public void OnClick()
