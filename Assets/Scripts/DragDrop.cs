@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class DragDrop : MonoBehaviour, IPointerClickHandler
 {
     public GameObject Canvas;
+    public GameObject Character;
     
     private bool isDragging = false;
     private bool isOverDropZone = false;
@@ -52,7 +54,17 @@ public class DragDrop : MonoBehaviour, IPointerClickHandler
         isDragging = false;
         if (isOverDropZone)
         {
-            transform.SetParent(dropZone.transform, false);
+            if(dropZone.name.Equals("PlayerCastle"))
+            {
+                GameObject pawn = Instantiate(Character, new Vector2(0, 0), Quaternion.identity);
+                pawn.GetComponent<Image>().sprite = Resources.Load<Sprite>("Characters/YumikoSplash"); // get this from current card instead of dirrectly from assets
+                pawn.transform.SetParent(dropZone.transform, false);
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                transform.SetParent(dropZone.transform, false);
+            }
         } else
         {
             transform.position = startPosition;
@@ -64,7 +76,7 @@ public class DragDrop : MonoBehaviour, IPointerClickHandler
     {
         if(transform.parent.name.Equals("PlayerSpellArea") && GetComponent<RectTransform>().rotation == new Quaternion(0,0,0,1))
         {
-            transform.Rotate(0, 0, 90);
+            transform.Rotate(0, 0, -90);
         }
     }
 }

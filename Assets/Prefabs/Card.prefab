@@ -92,6 +92,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Canvas: {fileID: 0}
+  Character: {fileID: 3117830504665089941, guid: 26d720ddf3b474c45a468caeda595ae9,
+    type: 3}
 --- !u!114 &-6718014876944209773
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -43,7 +43,7 @@ public class DrawCard : MonoBehaviour
             playerCard.transform.SetParent(PlayerDeck.transform, false);
         }
 
-            for (var i= 0; i< 5; i++ )
+        for (var i= 0; i< 5; i++ )
         {
             //GameObject playerCard = Instantiate(cards[Random.Range(0, cards.Count)], new Vector3(0, 0, 0), Quaternion.identity);
             //playercard.getcomponent<image>().color = colors[Random.Range(0, colors.Count)];
