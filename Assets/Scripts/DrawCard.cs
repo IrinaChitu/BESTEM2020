@@ -21,21 +21,12 @@ public class DrawCard : MonoBehaviour
         colors.Add(new Color32(32, 21, 236, 255));
         colors.Add(new Color32(236, 21, 34, 255));
         
-        PlayerDeck = GameObject.Find("PlayerDeck");
-    }
-
-    public void Update()
-    {
-        
-        if (PlayerDeck.transform.childCount >0 && PlayerArea.transform.childCount < 5)
-        {
-            GameObject newCard = PlayerDeck.transform.GetChild(PlayerDeck.transform.childCount - 1).gameObject;
-            newCard.transform.SetParent(PlayerArea.transform, false);
-        }
     }
 
     public void OnClick()
     {
+        GameObject PlayerDeck = GameObject.Find("PlayerDeck");
+
         for (var i = 0; i < 3; i++)
         {
             GameObject playerCard = Instantiate(cards[0], new Vector3(0, 0, 0), Quaternion.identity);
@@ -52,9 +43,9 @@ public class DrawCard : MonoBehaviour
             playerCard.GetComponent<Image>().color = new Color32(32, 21, 236, 255);
             playerCard.transform.SetParent(PlayerArea.transform, false);
 
-            GameObject enemyCard = Instantiate(Card, new Vector3(0, 0, 0), Quaternion.identity);
-            enemyCard.GetComponent<Image>().color = new Color32(236, 21, 34, 255);
-            enemyCard.transform.SetParent(EnemyArea.transform, false);
+            //GameObject enemyCard = Instantiate(Card, new Vector3(0, 0, 0), Quaternion.identity);
+            //enemyCard.GetComponent<Image>().color = new Color32(236, 21, 34, 255);
+            //enemyCard.transform.SetParent(EnemyArea.transform, false);
 
             // create a tag to differentiate between player and enemy
         }

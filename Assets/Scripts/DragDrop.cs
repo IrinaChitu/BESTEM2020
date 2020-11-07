@@ -15,6 +15,7 @@ public class DragDrop : MonoBehaviour, IPointerClickHandler
     private GameObject startParent;
     private Vector2 startPosition;
 
+
     private void Awake()
     {
         Canvas = GameObject.Find("Main Canvas");
@@ -49,30 +50,40 @@ public class DragDrop : MonoBehaviour, IPointerClickHandler
         isDragging = true;
     }
 
+
     public void EndDrag()
     {
         isDragging = false;
         if (isOverDropZone)
         {
-            if(dropZone.name.Equals("PlayerCastle"))
+            if (dropZone.name.Equals("PlayerCastle"))
             {
-                GameObject pawn = Instantiate(Character, new Vector2(0, 0), Quaternion.identity);
-                pawn.GetComponent<Image>().sprite = Resources.Load<Sprite>("Characters/YumikoSplash"); // get this from current card instead of dirrectly from assets
-                pawn.transform.SetParent(dropZone.transform, false);
-                Destroy(this.gameObject);
+                if (dropZone.transform.childCount < 9)
+                {
+                    GameObject pawn = Instantiate(Character, new Vector2(0, 0), Quaternion.identity);
+                    pawn.GetComponent<Image>().sprite = Resources.Load<Sprite>("Characters/YumikoSplash"); // get this from current card instead of dirrectly from assets
+                    //pawn.tag = "Player"; // used to check for battles
+                    pawn.transform.SetParent(dropZone.transform, false);
+                    Destroy(this.gameObject);
+
+                } else // there is no place in the Castle
+                {
+                    transform.position = startPosition;
+                    transform.SetParent(startParent.transform, false);
+                }
             }
-            else
+            else // SpellArea
             {
                 transform.SetParent(dropZone.transform, false);
             }
-        } else
+        } else // no droppable area selected
         {
             transform.position = startPosition;
             transform.SetParent(startParent.transform, false);
         }
     }
 
-    public void OnPointerClick(PointerEventData pointerEventData)
+    public void OnPointerClick(PointerEventData pointerEventData) // tap spell
     {
         if(transform.parent.name.Equals("PlayerSpellArea") && GetComponent<RectTransform>().rotation == new Quaternion(0,0,0,1))
         {
