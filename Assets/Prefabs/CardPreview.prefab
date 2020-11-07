@@ -254,6 +254,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: {fileID: 6693010966139616370}
+  image: {fileID: 9206160902494033049}
+  description: {fileID: 0}
+  dmgText: {fileID: 0}
+  hpText: {fileID: 0}
+  manaText: {fileID: 0}
+  dmgValue: 0
+  hpValue: 0
+  manaValue: 0
 --- !u!1 &875743951319197465
 GameObject:
   m_ObjectHideFlags: 0

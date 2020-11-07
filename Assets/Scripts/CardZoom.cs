@@ -21,6 +21,8 @@ public class CardZoom : MonoBehaviour
         // or choose an absolute value where to show them (eg: middle left)
         // zoomCard = Instantiate(gameObject, new Vector2(Input.mousePosition.x, Input.mousePosition.y + 120), Quaternion.identity);
         zoomCard = Instantiate(cardPreview, new Vector2(200, 200), Quaternion.identity);
+        zoomCard.GetComponent<CardScript>().SetCard(GetComponent<CardScript>().GetCard());
+        zoomCard.GetComponent<CardScript>().SetupFull();
         zoomCard.transform.SetParent(Canvas.transform, false);
         zoomCard.layer = LayerMask.NameToLayer("Zoom"); // alternative: remove the collider from the zoomCard
     }
