@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class DragDrop : MonoBehaviour
+public class DragDrop : MonoBehaviour, IPointerClickHandler
 {
     public GameObject Canvas;
     
@@ -56,6 +57,14 @@ public class DragDrop : MonoBehaviour
         {
             transform.position = startPosition;
             transform.SetParent(startParent.transform, false);
+        }
+    }
+
+    public void OnPointerClick(PointerEventData pointerEventData)
+    {
+        if(transform.parent.name.Equals("PlayerSpellArea") && GetComponent<RectTransform>().rotation == new Quaternion(0,0,0,1))
+        {
+            transform.Rotate(0, 0, 90);
         }
     }
 }

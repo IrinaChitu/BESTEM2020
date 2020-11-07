@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5605342519927415959}
   - component: {fileID: 610122282396836163}
   m_Layer: 5
-  m_Name: PlayerSpellArea
+  m_Name: SpellArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -97,7 +97,7 @@ MonoBehaviour:
   m_StartCorner: 2
   m_StartAxis: 1
   m_CellSize: {x: 75, y: 105}
-  m_Spacing: {x: 20, y: 0}
+  m_Spacing: {x: 40, y: 0}
   m_Constraint: 2
   m_ConstraintCount: 1
 --- !u!61 &610122282396836163
