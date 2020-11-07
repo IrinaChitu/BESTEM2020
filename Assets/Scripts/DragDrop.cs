@@ -49,7 +49,7 @@ public class DragDrop : MonoBehaviour
     public void EndDrag()
     {
         isDragging = false;
-        if (isOverDropZone && dropZone.CompareTag(tag))
+        if (isOverDropZone)
         {
             transform.SetParent(dropZone.transform, false);
         } else

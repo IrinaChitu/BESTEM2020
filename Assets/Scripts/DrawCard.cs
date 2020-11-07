@@ -31,12 +31,10 @@ public class DrawCard : MonoBehaviour
             //playercard.getcomponent<image>().color = colors[Random.Range(0, colors.Count)];
 
             GameObject playerCard = Instantiate(cards[0], new Vector3(0, 0, 0), Quaternion.identity);
-            playerCard.tag = "Player";
             playerCard.GetComponent<Image>().color = new Color32(32, 21, 236, 255);
             playerCard.transform.SetParent(PlayerArea.transform, false);
 
             GameObject enemyCard = Instantiate(Card, new Vector3(0, 0, 0), Quaternion.identity);
-            enemyCard.tag = "Enemy";
             enemyCard.GetComponent<Image>().color = new Color32(236, 21, 34, 255);
             enemyCard.transform.SetParent(EnemyArea.transform, false);
 
