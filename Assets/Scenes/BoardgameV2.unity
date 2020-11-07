@@ -304,6 +304,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: LandPlayer1
       objectReference: {fileID: 0}
+    - target: {fileID: 4122074094263465716, guid: ed4ebf14a34a2d941ba87a6f0bd55f50,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed4ebf14a34a2d941ba87a6f0bd55f50, type: 3}
 --- !u!224 &162974190 stripped
@@ -519,6 +524,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyCastle
       objectReference: {fileID: 0}
+    - target: {fileID: 7523945883641647039, guid: bd65c25eafa091146a8dba90704f44d7,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd65c25eafa091146a8dba90704f44d7, type: 3}
 --- !u!224 &686399966 stripped
@@ -661,6 +671,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: LandPlayer2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4122074094263465716, guid: ed4ebf14a34a2d941ba87a6f0bd55f50,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed4ebf14a34a2d941ba87a6f0bd55f50, type: 3}
@@ -897,6 +912,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: LandEnemy2
       objectReference: {fileID: 0}
+    - target: {fileID: 4122074094263465716, guid: ed4ebf14a34a2d941ba87a6f0bd55f50,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed4ebf14a34a2d941ba87a6f0bd55f50, type: 3}
 --- !u!1001 &1501570199
@@ -1016,6 +1036,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: LandEnemy1
       objectReference: {fileID: 0}
+    - target: {fileID: 4122074094263465716, guid: ed4ebf14a34a2d941ba87a6f0bd55f50,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed4ebf14a34a2d941ba87a6f0bd55f50, type: 3}
 --- !u!1 &1521729760 stripped
@@ -1041,6 +1066,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: EnemySpellArea
+      objectReference: {fileID: 0}
+    - target: {fileID: 3445170628278739122, guid: 105c7137c4e3b904f9037b19044be272,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 6277945711195180058, guid: 105c7137c4e3b904f9037b19044be272,
         type: 3}
@@ -1465,6 +1495,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyArea
       objectReference: {fileID: 0}
+    - target: {fileID: 2862075586614995288, guid: 1d91110aa6fcd6f42a28f073c04e38bc,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 5975777232990230675, guid: 1d91110aa6fcd6f42a28f073c04e38bc,
         type: 3}
       propertyPath: m_Color.r
@@ -1604,6 +1639,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PlayerArea
+      objectReference: {fileID: 0}
+    - target: {fileID: 2862075586614995288, guid: 1d91110aa6fcd6f42a28f073c04e38bc,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5975777232990230675, guid: 1d91110aa6fcd6f42a28f073c04e38bc,
         type: 3}
@@ -1844,6 +1884,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerCastle
       objectReference: {fileID: 0}
+    - target: {fileID: 7523945883641647039, guid: bd65c25eafa091146a8dba90704f44d7,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd65c25eafa091146a8dba90704f44d7, type: 3}
 --- !u!1001 &5903183117360046814
@@ -1857,6 +1902,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PlayerSpellArea
+      objectReference: {fileID: 0}
+    - target: {fileID: 3445170628278739122, guid: 105c7137c4e3b904f9037b19044be272,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 6277945711195180058, guid: 105c7137c4e3b904f9037b19044be272,
         type: 3}
