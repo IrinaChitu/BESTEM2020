@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DummyGameScene.unity
     guid: 6dbea6471977b413e96709b3ddee9643
+  - enabled: 1
+    path: Assets/Scenes/LeaderboardScene.unity
+    guid: 26526818219328e4e8bf824e0b843cbe
   m_configObjects: {}

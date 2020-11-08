@@ -138,4 +138,9 @@ public class InventoryManager : MonoBehaviour
     {
         SceneManager.LoadScene("LoadDecks");
     }
+
+    public void GoToMainMenu()
+    {
+        SceneManager.LoadScene("Menu");
+    }
 }

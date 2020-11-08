@@ -27,5 +27,15 @@ namespace Handlers
         {
             SceneManager.LoadScene("CardsInventory");
         }
-    }
+
+		public void ShowMyDecks()
+		{
+			SceneManager.LoadScene("LoadDecks");
+		}
+
+		public void ShowLeaderboard()
+		{
+			SceneManager.LoadScene("LeaderboardScene");
+		}
+	}
 }
