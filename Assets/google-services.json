@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "40416735344",
+    "firebase_url": "https://bestem-2020.firebaseio.com",
+    "project_id": "bestem-2020",
+    "storage_bucket": "bestem-2020.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:40416735344:android:ccfad1e827cc9e3dea44b5",
+        "android_client_info": {
+          "package_name": "com.Slytherins.CardGame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "40416735344-ad3laidsnn9qth8pnfgc2kdjmk6a0asn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3lv8uUGLuLpcRECwvu1x8JCplHRCHF7w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "40416735344-ad3laidsnn9qth8pnfgc2kdjmk6a0asn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
