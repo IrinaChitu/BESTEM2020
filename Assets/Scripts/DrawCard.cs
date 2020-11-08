@@ -18,21 +18,12 @@ public class DrawCard : MonoBehaviour
         colors.Add(new Color32(32, 21, 236, 255));
         colors.Add(new Color32(236, 21, 34, 255));
         
-        PlayerDeck = GameObject.Find("PlayerDeck");
-    }
-
-    public void Update()
-    {
-        
-        if (PlayerDeck.transform.childCount >0 && PlayerArea.transform.childCount < 5)
-        {
-            GameObject newCard = PlayerDeck.transform.GetChild(PlayerDeck.transform.childCount - 1).gameObject;
-            newCard.transform.SetParent(PlayerArea.transform, false);
-        }
     }
 
     public void OnClick()
     {
+        GameObject PlayerDeck = GameObject.Find("PlayerDeck");
+
         for (var i = 0; i < 3; i++)
         {
             Card tmp = new Card();
