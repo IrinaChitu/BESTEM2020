@@ -73,8 +73,12 @@ namespace Managers
         {
             moveListener = DatabaseAPI.ListenForValueChanged(
                 $"games/{currentGameInfo.gameId}/move",
-                args => onNewMove(
-                    StringSerializationAPI.Deserialize(typeof(Move), args.Snapshot.GetRawJsonValue()) as Move),
+                args =>
+                {
+                    if (!args.Snapshot.Exists) return;
+                    onNewMove(
+                        StringSerializationAPI.Deserialize(typeof(Move), args.Snapshot.GetRawJsonValue()) as Move);
+                },
                 exc => Debug.Log("!!!Fallback subscribe for move!!!"));
         }
 
@@ -85,7 +89,7 @@ namespace Managers
 
         public void SendMove(Move move)
         {
-            DatabaseAPI.PushObject($"games/{currentGameInfo.gameId}/move",
+            DatabaseAPI.PostObject($"games/{currentGameInfo.gameId}/move",
                 move,
                 () => {},
                 exc => Debug.Log("!!!Fallback send move!!!"));

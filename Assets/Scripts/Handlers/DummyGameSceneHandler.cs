@@ -31,24 +31,30 @@ namespace Handlers
 	        {
 	        	textInput.text = "You are second!";
 	        	myTurn = false;
-
-	         	MainManager.Instance.gameManager.ListenForMoves(move => Debug.Log(move.message) );
 	        }
-	    }
+			MainManager.Instance.gameManager.ListenForMoves(move =>
+			{
+				if (move.userId != MainManager.Instance.currentUserId)
+				{
+					textInput.text = move.message;
+					myTurn = true;
+				}
+			});
+		}
 
-	    // Update is called once per frame
-	    void Update()
+	    void OnDestroy()
 	    {
-	        
-	    }
+			MainManager.Instance.gameManager.StopListenForMoves();
+		}
 
 	    public void ButtonPressed()
 	    {
 	    	var randomMessage = RandomString(5);
 	    	if (myTurn)
 	    	{
-	    		MainManager.Instance.gameManager.SendMove(new Move{message = randomMessage});
-	    	}
+	    		MainManager.Instance.gameManager.SendMove(new Move{userId = MainManager.Instance.currentUserId, message = randomMessage});
+				myTurn = false;
+			}
 	    }
 
 		public static string RandomString(int length)
