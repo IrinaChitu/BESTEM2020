@@ -25,9 +25,6 @@ public class DragDrop : MonoBehaviour, IPointerClickHandler
     private GameObject startParent;
     private Vector2 startPosition;
 
-    public Response respone;
-    
-
     private void Start()
     {
         Canvas = GameObject.Find("Main Canvas");
@@ -124,13 +121,13 @@ public class DragDrop : MonoBehaviour, IPointerClickHandler
     {
         GameObject pawn = Instantiate(Character, new Vector2(0, 0), Quaternion.identity);
 
-        // get these fields from current card
-        pawn.GetComponent<Image>().sprite = Resources.Load<Sprite>("Characters/YumikoSplash");
+        Card card = this.GetComponent<CardScript>().card;
+        pawn.GetComponent<Image>().sprite = card.sprite;
 
         pawn.AddComponent<CharacterStats>();
 
         CharacterStats characterStats = pawn.GetComponent<CharacterStats>();
-        characterStats.ComponentConstructor("melee", 10, 10);
+        characterStats.ComponentConstructor(card.details, card.hpValue, card.dmgValue);
 
         pawn.transform.SetParent(dropZone.transform, false);
 

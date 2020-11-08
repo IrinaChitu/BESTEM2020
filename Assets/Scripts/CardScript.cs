@@ -9,7 +9,7 @@ public class Card
     public string dbID;
     public string title;
     public Sprite sprite;
-    public string description;
+    public string details;
     public int dmgValue;
     public int hpValue;
     public int manaValue;
@@ -19,7 +19,7 @@ public class Card
     public Card()
     {
         title = "Title: " + ID.ToString();
-        description = "Description " + ID.ToString();
+        details = "Description " + ID.ToString();
         dmgValue = ID;
         hpValue = ID;
         manaValue = ID;
@@ -59,7 +59,7 @@ public class CardScript : MonoBehaviour
     {
         title.text = card.title;
         image.sprite = card.sprite;
-        description.text = card.description;
+        description.text = card.details;
         dmgValue = card.dmgValue;
         dmgText.text = dmgValue.ToString();
         hpValue = card.hpValue;

@@ -13,6 +13,7 @@ using UnityEngine.SceneManagement;
 public class LoadDeckManager : MonoBehaviour
 {
     public GameObject deckPrefab;
+    public string previousDeck;
 
     private int objectNum = 0;
     private Dictionary<string, Card> cards = new Dictionary<string, Card>();
@@ -35,14 +36,26 @@ public class LoadDeckManager : MonoBehaviour
             Debug.Log(documentSnapshot.Id);
             Dictionary<string, object> deckDict = documentSnapshot.ToDictionary();
             List<string> selectedCards = new List<string>();
+            bool selected = false;
             foreach (KeyValuePair<string, object> pair in deckDict)
             {
-                selectedCards = (pair.Value as List<object>).ConvertAll(input => input.ToString());
+                if (pair.Key == "cards")
+                {
+                    selectedCards = (pair.Value as List<object>).ConvertAll(input => input.ToString());
+                } else
+                {
+                    selected = (bool)pair.Value;
+                    if (selected)
+                    {
+                        previousDeck = documentSnapshot.Id;
+                    }
+                }
             }
             Debug.Log("Done!");
             decks.Add(documentSnapshot.Id, selectedCards);
             AddChild(documentSnapshot.Id);
         }
+        UpdateSelected(previousDeck);
     }
 
     async void GetAllCards()
@@ -64,7 +77,8 @@ public class LoadDeckManager : MonoBehaviour
                     case "icon":
                         card.sprite = Resources.Load<Sprite>("Characters/" + (string)pair.Value);
                         break;
-                    case "type": // todo: implement
+                    case "type":
+                        card.details = (string)pair.Value;
                         break;
                     case "dmg":
                         card.dmgValue = System.Convert.ToInt32(pair.Value);
@@ -133,6 +147,35 @@ public class LoadDeckManager : MonoBehaviour
         GameObject newDeck = Instantiate(deckPrefab, new Vector2(200, 200), Quaternion.identity);
         newDeck.GetComponent<DeckScript>().Init(deckId, selectedCards);
         newDeck.transform.SetParent(this.transform, false);
+    }
+
+    public async void UpdateSelected(string deckId)
+    {
+        foreach (Transform child in transform)
+        {
+            child.gameObject.GetComponent<DeckScript>().selectButton.SetActive(true);
+        }
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.GetComponent<DeckScript>().deckId == deckId)
+            {
+                child.gameObject.GetComponent<DeckScript>().selectButton.SetActive(false);
+            }
+        }
+        DocumentReference deckRef = MainManager.Instance.firebaseManager.firestore.Collection("users").Document(MainManager.Instance.currentUserId).Collection("decks").Document(previousDeck);
+        Dictionary<string, object> updates = new Dictionary<string, object>
+        {
+            { "selected", false }
+        };
+        await deckRef.UpdateAsync(updates);
+
+        deckRef = MainManager.Instance.firebaseManager.firestore.Collection("users").Document(MainManager.Instance.currentUserId).Collection("decks").Document(deckId);
+        updates = new Dictionary<string, object>
+        {
+            { "selected", true }
+        };
+        await deckRef.UpdateAsync(updates);
+        previousDeck = deckId;
     }
 
     public async void ClearDeck(string deckId)

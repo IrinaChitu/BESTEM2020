@@ -47,6 +47,7 @@ public class RoundLogic : MonoBehaviour
         {
             myTurn = false;
         }
+
     }
 
     private void DrawCardFromDeck()
@@ -101,15 +102,6 @@ public class RoundLogic : MonoBehaviour
         landEnemy.units.melee.Sort((p1, p2) => p2.hpValue.CompareTo(p1.hpValue));
         landEnemy.units.melee.Reverse();
 
-        //Debug.Log($"landPlayer: {landPlayer.player}, landEnemy: {landEnemy.player}, damagePlayer: {damagePlayer}, damageEnemy: {damageEnemy}");
-        //for (int i = 0; i < landPlayer.units.melee.Count; i++)
-        //{
-        //    Debug.Log($"dmg{i}: {landPlayer.units.melee[i].dmgValue}, hp{i}: {landPlayer.units.melee[i].hpValue}");
-        //}
-        //for (int i = 0; i < landEnemy.units.melee.Count; i++)
-        //{
-        //    Debug.Log($"dmg{i}: {landEnemy.units.melee[i].dmgValue}, hp{i}: {landEnemy.units.melee[i].hpValue}");
-        //}
 
         for (int i=0; i<landEnemy.units.melee.Count; i++)
         {
@@ -178,19 +170,40 @@ public class RoundLogic : MonoBehaviour
                 damageEnemy = 0;
             }
         }
+ 
+        for (int i = 0; i < landPlayer.units.melee.Count; i++)
+        {
+            if (damageEnemy >= landPlayer.units.melee[i].hpValue)
+            {
+                damageEnemy -= landPlayer.units.melee[i].hpValue;
+                landPlayer.units.melee[i].hpValue = 0;
 
-        //Debug.Log($"LandEnemy: {landEnemy.units.melee.Count} ; Lane: {Lane[land].GetComponent<LandStats>().units.melee.Count}");
-        //Debug.Log($"Component: {GameObject.Find("LandEnemy2").GetComponent<LandStats>().units.melee.Count}");
-        //Debug.Log($"landPlayer: {landPlayer.player}, landEnemy: {landEnemy.player}, damagePlayer: {damagePlayer}, damageEnemy: {damageEnemy}");
-        //for (int i = 0; i < landPlayer.units.melee.Count; i++)
-        //{
-        //    Debug.Log($"dmg{i}: {landPlayer.units.melee[i].dmgValue}, hp{i}: {landPlayer.units.melee[i].hpValue}");
-        //}
-        //for (int i = 0; i < landEnemy.units.melee.Count; i++)
-        //{
-        //    Debug.Log($"dmg{i}: {landEnemy.units.melee[i].dmgValue}, hp{i}: {landEnemy.units.melee[i].hpValue}");
-        //}
-        //UpdateComponent(land-1, landPlayer.units);
+                for (int j = 0; j < landPlayer.units.allUnits.Count; j++)
+                {
+                    if (SameUnits(landPlayer.units.allUnits[j], landPlayer.units.melee[i]))
+                    {
+                        SendToGrave(land-1);
+                        landPlayer.units.allUnits.RemoveAt(j); // ToDo: send card to graveyard
+                        break;
+                    }
+                }
+                landPlayer.units.meleeDamage -= landPlayer.units.melee[i].dmgValue;
+                landPlayer.units.melee.RemoveAt(i);
+                i--;
+            }
+            else
+            {
+                for (int j = 0; j < landPlayer.units.allUnits.Count; j++)
+                {
+                    if (SameUnits(landPlayer.units.allUnits[j], landPlayer.units.melee[i]))
+                    {
+                        landPlayer.units.allUnits[j].hpValue -= damageEnemy;
+                        break;
+                    }
+                }
+                damageEnemy = 0;
+            }
+        }
 
     }
 
@@ -346,10 +359,6 @@ public class RoundLogic : MonoBehaviour
             // advance only if next land is mine  or all enemy units are dead or go to fight
             if ((Lane[cell - 1].GetComponent<LandStats>().player && (Lane[cell].GetComponent<LandStats>().units.allUnits.Count == 0 || Lane[cell].GetComponent<LandStats>().player)) || Fight(cell) == 1)
             {
-                Debug.Log("Ce puii mei e: " + cell.ToString());
-                Debug.Log(Lane[cell].GetComponent<LandStats>().player);
-                Debug.Log(Lane[cell].GetComponent<LandStats>().units.allUnits.Count);
-                Debug.Log("MEELS");
                 // advance all units from one land to another
                 if (cell > 0)
                 {
@@ -364,7 +373,6 @@ public class RoundLogic : MonoBehaviour
                 }
             }
         }
-        Debug.Log("MARIAN@");
     }
 
     private void AttackCastle()
@@ -374,10 +382,14 @@ public class RoundLogic : MonoBehaviour
         string HP = GameObject.Find("EnemyHero").GetComponentInChildren<TMPro.TextMeshProUGUI>().text;
         int heroHP = Convert.ToInt32(HP.Split(' ')[1]);
 
-        if (heroHP > totalDamage)
+        Debug.Log($"HP: {heroHP}; totalDmg: {totalDamage}");
+        heroHP -= totalDamage;
+        if (heroHP > 0)
         {
-            heroHP -= totalDamage;
             GameObject.Find("EnemyHero").GetComponentInChildren<TMPro.TextMeshProUGUI>().text = $"HP: {heroHP} / TotalHP: 15"; // TBD
+        } else
+        {
+            Debug.Log("Victory!");
         }
 
     }

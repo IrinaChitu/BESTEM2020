@@ -45,6 +45,7 @@ namespace Handlers
                         playerId => Debug.Log(playerId + " is ready!"), () =>
                         {
                             Debug.Log("All players are ready!");
+
                             SceneManager.LoadScene("BoardgameV2");
                         }, Debug.Log);
                 }, Debug.Log);
