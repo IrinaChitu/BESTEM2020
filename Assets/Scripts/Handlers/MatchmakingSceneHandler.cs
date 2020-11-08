@@ -46,7 +46,7 @@ namespace Handlers
                         {
                             Debug.Log("All players are ready!");
 
-                            SceneManager.LoadScene("BoardgameV2");
+                            SceneManager.LoadScene("BoardgameV3");
                         }, Debug.Log);
                 }, Debug.Log);
 
