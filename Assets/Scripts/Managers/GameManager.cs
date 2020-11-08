@@ -76,8 +76,9 @@ namespace Managers
                 args =>
                 {
                     if (!args.Snapshot.Exists) return;
-                    onNewMove(
-                        StringSerializationAPI.Deserialize(typeof(Move), args.Snapshot.GetRawJsonValue()) as Move);
+                    var move = StringSerializationAPI.Deserialize(typeof(Move), args.Snapshot.GetRawJsonValue()) as Move;
+                    if (move.userId == MainManager.Instance.currentUserId) return;
+                    onNewMove(move);
                 },
                 exc => Debug.Log("!!!Fallback subscribe for move!!!"));
         }

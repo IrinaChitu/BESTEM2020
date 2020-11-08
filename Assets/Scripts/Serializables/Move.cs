@@ -6,6 +6,8 @@ namespace Serializables
     public class Move
     {
         public string userId;
-        public string message;
+        public string command;
+        public string type;
+        public int cardId;
     }
 }

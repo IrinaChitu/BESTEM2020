@@ -34,11 +34,8 @@ namespace Handlers
 	        }
 			MainManager.Instance.gameManager.ListenForMoves(move =>
 			{
-				if (move.userId != MainManager.Instance.currentUserId)
-				{
-					textInput.text = move.message;
-					myTurn = true;
-				}
+				textInput.text = move.command;
+				myTurn = true;
 			});
 		}
 
@@ -49,10 +46,11 @@ namespace Handlers
 
 	    public void ButtonPressed()
 	    {
+			// asta ar trebui sa se intample la end turn
 	    	var randomMessage = RandomString(5);
 	    	if (myTurn)
 	    	{
-	    		MainManager.Instance.gameManager.SendMove(new Move{userId = MainManager.Instance.currentUserId, message = randomMessage});
+	    		MainManager.Instance.gameManager.SendMove(new Move{userId = MainManager.Instance.currentUserId, command = randomMessage});
 				myTurn = false;
 			}
 	    }
