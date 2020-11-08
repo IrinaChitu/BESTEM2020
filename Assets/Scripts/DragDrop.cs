@@ -15,21 +15,11 @@ public class DragDrop : MonoBehaviour, IPointerClickHandler
     private GameObject startParent;
     private Vector2 startPosition;
 
-    public void CreateLandStatsComponents()
-    {
-        GameObject.Find("PlayerCastle").AddComponent<LandStats>();
-        GameObject.Find("LandPlayer1").AddComponent<LandStats>();
-        GameObject.Find("LandPlayer2").AddComponent<LandStats>();
-        GameObject.Find("LandPlayer2").GetComponent<LandStats>().frontline = true;
-        GameObject.Find("LandEnemy2").AddComponent<LandStats>();
-        GameObject.Find("LandEnemy1").AddComponent<LandStats>();
-        GameObject.Find("EnemyCastle").AddComponent<LandStats>();
-    }
+    
 
-    private void Awake()
+    private void Start()
     {
         Canvas = GameObject.Find("Main Canvas");
-        CreateLandStatsComponents();
     }
 
     void Update()
@@ -75,6 +65,7 @@ public class DragDrop : MonoBehaviour, IPointerClickHandler
         }
     }
 
+
     public CharacterStats CreateCharacterFromCard()
     {
         GameObject pawn = Instantiate(Character, new Vector2(0, 0), Quaternion.identity);
@@ -100,14 +91,14 @@ public class DragDrop : MonoBehaviour, IPointerClickHandler
 
         if (characterStats.type.Equals("melee"))
         {
-            castleStats.playerUnits.melee.Add(characterStats);
-            castleStats.playerUnits.meleeDamage += characterStats.dmgValue;
+            castleStats.units.melee.Add(characterStats);
+            castleStats.units.meleeDamage += characterStats.dmgValue;
         }
         else if (characterStats.type.Equals("range"))
         {
-            castleStats.playerUnits.rangeDamage += characterStats.dmgValue;
+            castleStats.units.rangeDamage += characterStats.dmgValue;
         }
-        castleStats.playerUnits.allUnits.Add(characterStats);
+        castleStats.units.allUnits.Add(characterStats);
     }
 
     public void EndDrag()
