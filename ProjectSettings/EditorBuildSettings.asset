@@ -9,6 +9,24 @@ EditorBuildSettings:
     path: Assets/Scenes/tryouts/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
+    path: Assets/Scenes/LoadingScene.unity
+    guid: 4923ab403d581494ba697287f0f4eeb0
+  - enabled: 1
+    path: Assets/Scenes/AuthenticationScene.unity
+    guid: fc4f4c4a678d54ca29c2bf8cde47ff58
+  - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: dc37fd00897374bfa9b673afcefc9327
+  - enabled: 1
+    path: Assets/Scenes/MatchmakingScene.unity
+    guid: 37915b4af34ae4bdd8b2ebb4d71fab00
+  - enabled: 1
     path: Assets/Scenes/BoardgameV2.unity
     guid: 954bd6d72d851e3459f61ea129ea1abe
+  - enabled: 1
+    path: Assets/Scenes/CardsInventory.unity
+    guid: 73c168f56ff042e44b1c789edf7ca888
+  - enabled: 1
+    path: Assets/Scenes/LoadDecks.unity
+    guid: 5a3a5d5613f90234495865efaf401e00
   m_configObjects: {}

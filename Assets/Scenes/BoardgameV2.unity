@@ -2260,7 +2260,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09b974cb0378faf4faa57550f240a375, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Card: {fileID: 137927813701603789, guid: fd053ae763753f348a8bfb10ea4e07dc, type: 3}
+  cardObject: {fileID: 137927813701603789, guid: fd053ae763753f348a8bfb10ea4e07dc,
+    type: 3}
   PlayerArea: {fileID: 694717188}
   EnemyArea: {fileID: 1521729760}
 --- !u!224 &2032097770 stripped
