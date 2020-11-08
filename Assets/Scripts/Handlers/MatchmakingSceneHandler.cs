@@ -10,6 +10,7 @@ namespace Handlers
     {
         public GameObject searchingPanel;
         public GameObject leaveButton;
+        public GameObject readyButton;
         public GameObject foundPanel;
 
         private bool gameFound;
@@ -44,13 +45,14 @@ namespace Handlers
                         playerId => Debug.Log(playerId + " is ready!"), () =>
                         {
                             Debug.Log("All players are ready!");
-                            SceneManager.LoadScene("GameV2");
+                            // SceneManager.LoadScene("GameV2");
+                            SceneManager.LoadScene("DummyGameScene");
                         }, Debug.Log);
                 }, Debug.Log);
 
             searchingPanel.SetActive(false);
-            leaveButton.SetActive(false);
             foundPanel.SetActive(true);
+            readyButton.SetActive(true);
         }
 
         public void LeaveQueue()

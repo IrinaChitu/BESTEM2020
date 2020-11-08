@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using FullSerializer;
 
 namespace APIs
@@ -12,7 +13,8 @@ namespace APIs
             _serializer.TrySerialize(type, value, out data).AssertSuccessWithoutWarnings();
 
             // emit the data via JSON
-            return fsJsonPrinter.CompressedJson(data);
+            var res = fsJsonPrinter.CompressedJson(data);
+            return res;
         }
 
         public static object Deserialize(Type type, string serializedState)

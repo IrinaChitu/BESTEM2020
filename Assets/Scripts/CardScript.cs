@@ -19,10 +19,6 @@ public class Card
     public Card()
     {
         title = "Title: " + ID.ToString();
-
-        allChars = Resources.LoadAll<Sprite>("Characters/");
-        sprite = allChars[(int)Random.Range(0.0f, allChars.Length - 1)];
-
         description = "Description " + ID.ToString();
         dmgValue = ID;
         hpValue = ID;
