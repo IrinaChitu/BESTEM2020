@@ -22,5 +22,10 @@ namespace Handlers
 	    {
 	    	SceneManager.LoadScene("MatchmakingScene");
 	    }
-	}
+
+        public void BuildDeck()
+        {
+            SceneManager.LoadScene("CardsInventory");
+        }
+    }
 }

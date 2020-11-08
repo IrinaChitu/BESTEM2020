@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Card
 {
     public static int ID = 0;
+    public string dbID;
     public string title;
     public Sprite sprite;
     public string description;
@@ -37,9 +38,12 @@ public class CardScript : MonoBehaviour
     public TMPro.TextMeshProUGUI description;
     public TMPro.TextMeshProUGUI dmgText, hpText, manaText;
     public int dmgValue, hpValue, manaValue;
+    public Card card;
 
-    private Card card;
-
+    public int quantity = 0;
+    public GameObject plusBtn = null;
+    public GameObject minusBtn = null;
+    public Text quantityText = null;
     public void Awake()
     {
         minusBtn.SetActive(false);
@@ -74,10 +78,6 @@ public class CardScript : MonoBehaviour
         image.sprite = card.sprite;
     }
 
-    public int quantity = 0;
-    public GameObject plusBtn = null;
-    public GameObject minusBtn = null;
-    public Text quantityText = null;
     public void IncrementQuantity()
     {
         quantity = Mathf.Min(quantity + 1, 999);

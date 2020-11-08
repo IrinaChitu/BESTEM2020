@@ -10,14 +10,42 @@ using Firebase.Extensions;
 
 using UnityEngine.SceneManagement;
 
-public class InventoryManager : MonoBehaviour
+public class LoadDeckManager : MonoBehaviour
 {
-    public GameObject cardPrefab;
+    public GameObject deckPrefab;
 
     private int objectNum = 0;
-    private List<GameObject> cards = new List<GameObject>();
-    // Start is called before the first frame update
+    private Dictionary<string, Card> cards = new Dictionary<string, Card>();
+    private Dictionary<string, List<string>> decks = new Dictionary<string, List<string>>();
+    private List<Card> selectedCards;
+
+    //// Start is called before the first frame update
     async void Start()
+    {
+        GetAllCards();
+    }
+
+    async void GetAllDecks()
+    {
+        Query allDecksQery = MainManager.Instance.firebaseManager.firestore.Collection("users").Document(MainManager.Instance.currentUserId).Collection("decks");
+        QuerySnapshot allDecksQerySnapshot = await allDecksQery.GetSnapshotAsync();
+
+        foreach (DocumentSnapshot documentSnapshot in allDecksQerySnapshot.Documents)
+        {
+            Debug.Log(documentSnapshot.Id);
+            Dictionary<string, object> deckDict = documentSnapshot.ToDictionary();
+            List<string> selectedCards = new List<string>();
+            foreach (KeyValuePair<string, object> pair in deckDict)
+            {
+                selectedCards = (pair.Value as List<object>).ConvertAll(input => input.ToString());
+            }
+            Debug.Log("Done!");
+            decks.Add(documentSnapshot.Id, selectedCards);
+            AddChild(documentSnapshot.Id);
+        }
+    }
+
+    async void GetAllCards()
     {
         Query allCardsQuery = MainManager.Instance.firebaseManager.firestore.Collection("cards");
         QuerySnapshot allCardsQuerySnapshot = await allCardsQuery.GetSnapshotAsync();
@@ -49,9 +77,9 @@ public class InventoryManager : MonoBehaviour
                         break;
                 }
             }
-            card.dbID = documentSnapshot.Id;
-            AddChild(card);
+            cards.Add(documentSnapshot.Id, card);
         }
+        GetAllDecks();
     }
 
     void Update()
@@ -88,54 +116,38 @@ public class InventoryManager : MonoBehaviour
 
     void AddChild()
     {
-        GameObject newCard = Instantiate(cardPrefab, new Vector2(200, 200), Quaternion.identity);
-
-        Card card = new Card();
-        newCard.GetComponent<CardScript>().SetCard(card);
-        newCard.GetComponent<CardScript>().SetupFull();
-        newCard.transform.SetParent(this.transform, false);
-        cards.Add(newCard);
+        GameObject newDeck = Instantiate(deckPrefab, new Vector2(200, 200), Quaternion.identity);
+        newDeck.transform.SetParent(this.transform, false);
     }
 
-    void AddChild(Card card)
+    void AddChild(string deckId)
     {
         objectNum += 1;
         UpdateSize();
 
-        GameObject newCard = Instantiate(cardPrefab, new Vector2(200, 200), Quaternion.identity);
-        newCard.GetComponent<CardScript>().SetCard(card);
-        newCard.GetComponent<CardScript>().SetupFull();
-        newCard.transform.SetParent(this.transform, false);
-        cards.Add(newCard);
-    }
-
-    public async void SaveDeck()
-    {
-        List<string> selectedCards = new List<string>();
-        foreach (GameObject obj in cards)
-        {
-            for (int i = 0; i < obj.GetComponent<CardScript>().quantity; ++i)
-            {
-                selectedCards.Add(obj.GetComponent<CardScript>().card.dbID);
-            }
+        selectedCards = new List<Card>();
+        foreach (string cardId in decks[deckId]) {
+            selectedCards.Add(cards[cardId]);
         }
 
-        foreach (string card in selectedCards)
-        {
-            Debug.Log(card);
-        }
-        Dictionary<string, object> deck = new Dictionary<string, object>
-        {
-            { "cards", selectedCards.ToArray() }
-        };
-        Debug.Log(deck);
-        DocumentReference addedDocRef = await MainManager.Instance.firebaseManager.firestore.Collection("users").Document(MainManager.Instance.currentUserId).Collection("decks").AddAsync(deck);
-        Debug.Log("Done: " + addedDocRef.Id);
-       
+        GameObject newDeck = Instantiate(deckPrefab, new Vector2(200, 200), Quaternion.identity);
+        newDeck.GetComponent<DeckScript>().Init(deckId, selectedCards);
+        newDeck.transform.SetParent(this.transform, false);
     }
 
-    public void GoToLoadDecks()
+    public async void ClearDeck(string deckId)
     {
-        SceneManager.LoadScene("LoadDecks");
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+        decks = new Dictionary<string, List<string>>();
+        MainManager.Instance.firebaseManager.firestore.Collection("users").Document(MainManager.Instance.currentUserId).Collection("decks").Document(deckId).DeleteAsync();
+        GetAllDecks();
+    }
+
+    public void GoToCardsInventory()
+    {
+        SceneManager.LoadScene("CardsInventory");
     }
 }
