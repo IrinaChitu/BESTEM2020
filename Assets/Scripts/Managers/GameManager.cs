@@ -16,10 +16,11 @@ namespace Managers
         private KeyValuePair<DatabaseReference, EventHandler<ChildChangedEventArgs>> readyListener;
         // private KeyValuePair<DatabaseReference, EventHandler<ValueChangedEventArgs>> localPlayerTurnListener;
         private KeyValuePair<DatabaseReference, EventHandler<ValueChangedEventArgs>> currentGameInfoListener;
+        private KeyValuePair<DatabaseReference, EventHandler<ValueChangedEventArgs>> moveListener;
 
-        private readonly Dictionary<string, KeyValuePair<DatabaseReference, EventHandler<ChildChangedEventArgs>>>
-            moveListeners =
-                new Dictionary<string, KeyValuePair<DatabaseReference, EventHandler<ChildChangedEventArgs>>>();
+        // private readonly Dictionary<string, KeyValuePair<DatabaseReference, EventHandler<ChildChangedEventArgs>>>
+        //     moveListeners =
+        //         new Dictionary<string, KeyValuePair<DatabaseReference, EventHandler<ChildChangedEventArgs>>>();
 
         public void GetCurrentGameInfo(string gameId, string localPlayerId, Action<GameInfo> callback,
             Action<AggregateException> fallback)
@@ -62,6 +63,33 @@ namespace Managers
         }
 
         public void StopListeningForAllPlayersReady() => DatabaseAPI.StopListeningForChildAdded(readyListener);
+
+        public string GetFirstPlayerId()
+        {
+            return currentGameInfo.playersIds[0];
+        }
+
+        public void ListenForMoves(Action<Move> onNewMove)
+        {
+            moveListener = DatabaseAPI.ListenForValueChanged(
+                $"games/{currentGameInfo.gameId}/move",
+                args => onNewMove(
+                    StringSerializationAPI.Deserialize(typeof(Move), args.Snapshot.GetRawJsonValue()) as Move),
+                exc => Debug.Log("!!!Fallback subscribe for move!!!"));
+        }
+
+        public void StopListenForMoves()
+        {
+            DatabaseAPI.StopListeningForValueChanged(moveListener);
+        }
+
+        public void SendMove(Move move)
+        {
+            DatabaseAPI.PushObject($"games/{currentGameInfo.gameId}/move",
+                move,
+                () => {},
+                exc => Debug.Log("!!!Fallback send move!!!"));
+        }
 
         // public void SendMove(Move move, Action callback, Action<AggregateException> fallback)
         // {
