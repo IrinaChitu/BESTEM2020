@@ -150,4 +150,9 @@ public class LoadDeckManager : MonoBehaviour
     {
         SceneManager.LoadScene("CardsInventory");
     }
+
+    public void GoToMainMenu()
+    {
+        SceneManager.LoadScene("Menu");
+    }
 }
