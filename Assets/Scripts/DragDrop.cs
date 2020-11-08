@@ -15,10 +15,21 @@ public class DragDrop : MonoBehaviour, IPointerClickHandler
     private GameObject startParent;
     private Vector2 startPosition;
 
+    public void CreateLandStatsComponents()
+    {
+        GameObject.Find("PlayerCastle").AddComponent<LandStats>();
+        GameObject.Find("LandPlayer1").AddComponent<LandStats>();
+        GameObject.Find("LandPlayer2").AddComponent<LandStats>();
+        GameObject.Find("LandPlayer2").GetComponent<LandStats>().frontline = true;
+        GameObject.Find("LandEnemy2").AddComponent<LandStats>();
+        GameObject.Find("LandEnemy1").AddComponent<LandStats>();
+        GameObject.Find("EnemyCastle").AddComponent<LandStats>();
+    }
 
     private void Awake()
     {
         Canvas = GameObject.Find("Main Canvas");
+        CreateLandStatsComponents();
     }
 
     void Update()
@@ -64,7 +75,7 @@ public class DragDrop : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public void CreateCharacterFromCard()
+    public CharacterStats CreateCharacterFromCard()
     {
         GameObject pawn = Instantiate(Character, new Vector2(0, 0), Quaternion.identity);
 
@@ -72,10 +83,31 @@ public class DragDrop : MonoBehaviour, IPointerClickHandler
         pawn.GetComponent<Image>().sprite = Resources.Load<Sprite>("Characters/YumikoSplash");
 
         pawn.AddComponent<CharacterStats>();
-        pawn.GetComponent<CharacterStats>().ComponentConstructor("melee", 10, 10);
+
+        CharacterStats characterStats = pawn.GetComponent<CharacterStats>();
+        characterStats.ComponentConstructor("melee", 10, 10);
 
         pawn.transform.SetParent(dropZone.transform, false);
         Destroy(this.gameObject);
+
+        return characterStats;
+    }
+
+
+    private void UpdateCastleStats(GameObject playerCastle, CharacterStats characterStats)
+    {
+        LandStats castleStats = playerCastle.GetComponent<LandStats>();
+
+        if (characterStats.type.Equals("melee"))
+        {
+            castleStats.playerUnits.melee.Add(characterStats);
+            castleStats.playerUnits.meleeDamage += characterStats.dmgValue;
+        }
+        else if (characterStats.type.Equals("range"))
+        {
+            castleStats.playerUnits.rangeDamage += characterStats.dmgValue;
+        }
+        castleStats.playerUnits.allUnits.Add(characterStats);
     }
 
     public void EndDrag()
@@ -87,9 +119,9 @@ public class DragDrop : MonoBehaviour, IPointerClickHandler
             {
                 if (dropZone.transform.childCount < 9)
                 {
-                    CreateCharacterFromCard();
-
-                } else // there is no place in the Castle
+                    UpdateCastleStats(dropZone, CreateCharacterFromCard());
+                }
+                else // there is no place in the Castle
                 {
                     transform.position = startPosition;
                     transform.SetParent(startParent.transform, false);

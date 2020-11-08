@@ -6,15 +6,15 @@ public struct Units
 {
     public List<DragDrop.CharacterStats> allUnits;
     public List<DragDrop.CharacterStats> melee;
-    public List<DragDrop.CharacterStats> range;
+
+    public int meleeDamage;
+    public int rangeDamage;
 }
 
 public class LandStats: MonoBehaviour
 {
-    public Units playerUnits = new Units { allUnits = new List<DragDrop.CharacterStats>(), melee = new List<DragDrop.CharacterStats>(), range = new List<DragDrop.CharacterStats>() };
-    public Units enemyUnits = new Units { allUnits = new List<DragDrop.CharacterStats>(), melee = new List<DragDrop.CharacterStats>(), range = new List<DragDrop.CharacterStats>() };
-    public int totalHP = 0;
-    public int totalDamage = 0;
+    public Units playerUnits = new Units { allUnits = new List<DragDrop.CharacterStats>(), melee = new List<DragDrop.CharacterStats>(), meleeDamage = 0, rangeDamage = 0 };
+    public Units enemyUnits = new Units { allUnits = new List<DragDrop.CharacterStats>(), melee = new List<DragDrop.CharacterStats>(), meleeDamage = 0, rangeDamage = 0 };
     public bool frontline = false;
 }
 
@@ -27,43 +27,17 @@ public class RoundLogic : MonoBehaviour
     void Start()
     {
         Lane.Add(GameObject.Find("PlayerCastle"));
-        Lane[Lane.Count - 1].AddComponent<LandStats>();
-        
         Lane.Add(GameObject.Find("LandPlayer1"));
-        Lane[Lane.Count - 1].AddComponent<LandStats>();
-        
         Lane.Add(GameObject.Find("LandPlayer2"));
-        Lane[Lane.Count - 1].AddComponent<LandStats>();
-        Lane[Lane.Count - 1].gameObject.GetComponent<LandStats>().frontline = true;
-
         Lane.Add(GameObject.Find("LandEnemy2"));
-        Lane[Lane.Count - 1].AddComponent<LandStats>();
-      
         Lane.Add(GameObject.Find("LandEnemy1"));
-        Lane[Lane.Count - 1].AddComponent<LandStats>();
-       
         Lane.Add(GameObject.Find("EnemyCastle"));
-        Lane[Lane.Count - 1].AddComponent<LandStats>();
 
-        PopulateLandStats();
         // query database for myTurn
     }
 
-    private void PopulateLandStats()
-    {
-        for (int cell = Lane.Count - 3; cell >= 0; cell--)
-        {
-            for (int i = Lane[cell].transform.childCount - 1; i >= 0; i--)
-            {
-                //Lane[cell].transform.GetChild(i).GetComponent<LandStats>().playerUnits.Add();
+    
 
-
-            }
-        }
-
-        //Lane[land].GetComponent<LandStats>().playerUnits.allUnits.Sort()
-
-    }
 
     private void DrawCardFromDeck()
     {
@@ -78,15 +52,105 @@ public class RoundLogic : MonoBehaviour
         }
     }
 
-    private void MeelsAttack()
+    private void MeelsAttack(int land, int turn) // can it be one for both?
     {
-        //Lane[land].GetComponent<LandStats>().playerUnits.melee[0]
-
+        if (turn == 0)
+        {
+            LandStats landStats = Lane[land].GetComponent<LandStats>();
+            int damage = landStats.playerUnits.meleeDamage;
+            int i = 0;
+            while (damage >=0)
+            {
+                int meleeHp = landStats.enemyUnits.melee[i].hpValue;
+                if (damage > meleeHp)
+                {
+                    landStats.enemyUnits.melee[i].hpValue = 0;
+                    damage -= meleeHp;
+                    i++;
+                }
+                else
+                {
+                    landStats.enemyUnits.melee[i].hpValue -= damage;
+                    break;
+                }
+            }
+            landStats.enemyUnits.melee.Sort();
+            landStats.enemyUnits.allUnits.Sort();
+        }
+        else
+        {
+            LandStats landStats = Lane[land].GetComponent<LandStats>();
+            int damage = landStats.enemyUnits.meleeDamage;
+            int i = 0;
+            while (damage >= 0)
+            {
+                int meleeHp = landStats.playerUnits.melee[i].hpValue;
+                if (damage > meleeHp)
+                {
+                    landStats.playerUnits.melee[i].hpValue = 0;
+                    damage -= meleeHp;
+                    i++;
+                }
+                else
+                {
+                    landStats.playerUnits.melee[i].hpValue -= damage;
+                    break;
+                }
+            }
+            landStats.playerUnits.melee.Sort();
+            landStats.playerUnits.allUnits.Sort();
+        }
     }
 
-    private void RangeAttack()
+    private void RangeAttack(int land, int turn)
     {
+        if (turn == 0)
+        {
+            LandStats landStats = Lane[land].GetComponent<LandStats>();
+            int damage = landStats.playerUnits.rangeDamage;
+            int i = 0;
+            while (damage >= 0)
+            {
+                int unitHp = landStats.enemyUnits.allUnits[i].hpValue;
+                if (damage > unitHp)
+                {
+                    landStats.enemyUnits.melee[i].hpValue = 0;
+                    damage -= unitHp;
+                    i++;
+                }
+                else
+                {
+                    landStats.enemyUnits.melee[i].hpValue -= damage;
+                    break;
+                }
+            }
+            landStats.enemyUnits.melee.Sort();
+            landStats.enemyUnits.allUnits.Sort();
 
+        }
+        else
+        {
+            LandStats landStats = Lane[land].GetComponent<LandStats>();
+            int damage = landStats.enemyUnits.rangeDamage;
+            int i = 0;
+            while (damage >= 0)
+            {
+                int unitHp = landStats.playerUnits.allUnits[i].hpValue;
+                if (damage > unitHp)
+                {
+                    landStats.playerUnits.melee[i].hpValue = 0;
+                    damage -= unitHp;
+                    i++;
+                }
+                else
+                {
+                    landStats.playerUnits.melee[i].hpValue -= damage;
+                    break;
+                }
+            }
+            landStats.playerUnits.melee.Sort();
+            landStats.playerUnits.allUnits.Sort();
+        }
     }
 
     private int Fight(int land) // returns 1 if current player wins | -1 looses | 0 draw
@@ -94,15 +158,17 @@ public class RoundLogic : MonoBehaviour
         // in which order?
         
         // first player
-        MeelsAttack();
-        RangeAttack();
+        MeelsAttack(land, 0); // probably sent who's turn it is
+        RangeAttack(land, 0);
 
         // second player
+        MeelsAttack(land, 1);
+        RangeAttack(land, 1);
 
         // calculate battle results
         if (Lane[land].GetComponent<LandStats>().enemyUnits.allUnits.Count == 0)
         {
-            if (Lane[land].GetComponent<LandStats>().playerUnits.allUnits.Count != 0)
+            if (Lane[land].GetComponent<LandStats>().playerUnits.allUnits.Count > 0)
             {
                 return 1;
             } else
@@ -124,8 +190,10 @@ public class RoundLogic : MonoBehaviour
                 // advance all units from one land to another
                 for (int i = Lane[cell].transform.childCount - 1; i >= 0; i--)
                 {
-                    Lane[cell].transform.GetChild(i).SetParent(Lane[cell+1].transform, false);
+                    Transform child = Lane[cell].transform.GetChild(i);
+                    child.SetParent(Lane[cell+1].transform, false);
                 }
+
             }
 
         }
@@ -147,6 +215,9 @@ public class RoundLogic : MonoBehaviour
             AttackCastle();
         }
         DrawCardFromDeck();
+
+        Destroy(GameObject.Find("PlayerCastle").GetComponent<LandStats>());
+        GameObject.Find("PlayerCastle").AddComponent<LandStats>();
 
         // block movement (besides spells?)
     }
