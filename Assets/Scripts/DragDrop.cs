@@ -3,6 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Managers;
+using Serializables;
+
+public class Response
+{
+    public string userId;
+    public string command;
+    public string type;
+    public int cardId;
+}
 
 public class DragDrop : MonoBehaviour, IPointerClickHandler
 {
@@ -15,11 +25,55 @@ public class DragDrop : MonoBehaviour, IPointerClickHandler
     private GameObject startParent;
     private Vector2 startPosition;
 
+    public Response respone;
     
 
     private void Start()
     {
         Canvas = GameObject.Find("Main Canvas");
+
+        MainManager.Instance.gameManager.ListenForMoves(move =>
+        {
+
+            switch (move.command)
+            {
+                case "ENDTURN":
+                    RoundLogic.myTurn = true;
+                    break;
+
+                case "ADD":
+                    if(move.type.Equals("UNIT"))
+                    {
+                        GameObject castleZone = GameObject.Find("EnemyCastle");
+
+                        // based on move.cardId
+                        UpdateCastleStats(castleZone, CreateCharacterFromCard());
+                    }
+                    else // "SPELL"
+                    {
+                        // generare card cu date din db
+
+                        // GameObject.Find("EnemySpellAre").transform.SetParent(card, false);
+                    }
+                    break;
+
+
+                case "TAP":
+                    GameObject enemyZone = GameObject.Find("EnemySpellAre");
+                    for (int i = 0; i < enemyZone.transform.childCount; i++)
+                    {
+                        Transform child = enemyZone.transform.GetChild(i);
+                        if (child.gameObject.GetComponent<CardScript>().card.dbID.Equals(move.cardId))
+                        {
+                            child.transform.Rotate(0, 0, 90);
+                            break;
+                        }
+                    }
+                    break;
+            }
+
+            Debug.Log(move.command);
+        });
     }
 
     void Update()
@@ -79,6 +133,12 @@ public class DragDrop : MonoBehaviour, IPointerClickHandler
         characterStats.ComponentConstructor("melee", 10, 10);
 
         pawn.transform.SetParent(dropZone.transform, false);
+
+        // add unit
+        MainManager.Instance.gameManager.SendMove(new Move { userId = MainManager.Instance.currentUserId, command = "ADD", type="UNIT", cardId=1234 });
+
+        Debug.Log("send move");
+
         Destroy(this.gameObject);
 
         return characterStats;
@@ -120,6 +180,9 @@ public class DragDrop : MonoBehaviour, IPointerClickHandler
             }
             else // SpellArea
             {
+                // add spell
+                MainManager.Instance.gameManager.SendMove(new Move { userId = MainManager.Instance.currentUserId, command = "ADD", type = "SPELL", cardId = 3456 });
+
                 transform.SetParent(dropZone.transform, false);
             }
         } else // no droppable area selected
@@ -131,9 +194,12 @@ public class DragDrop : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData pointerEventData) // tap spell
     {
-        if(transform.parent.name.Equals("PlayerSpellArea") && GetComponent<RectTransform>().rotation == new Quaternion(0,0,0,1))
+
+        if (transform.parent.name.Equals("PlayerSpellArea") && GetComponent<RectTransform>().rotation == new Quaternion(0,0,0,1))
         {
             transform.Rotate(0, 0, -90);
+            MainManager.Instance.gameManager.SendMove(new Move { userId = MainManager.Instance.currentUserId, command = "TAP", type = "SPELL", cardId = 2345 });
+
         }
     }
 }

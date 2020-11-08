@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Managers;
+using Serializables;
 
 public struct Units
 {
@@ -23,7 +25,7 @@ public class RoundLogic : MonoBehaviour
 {
     List<GameObject> Lane = new List<GameObject>();
 
-    // bool myTurn = false;
+    public static bool myTurn = false;
 
     void Start()
     {
@@ -35,6 +37,16 @@ public class RoundLogic : MonoBehaviour
         Lane.Add(GameObject.Find("EnemyCastle"));
 
         // query database for myTurn
+        var firstPlayerId = MainManager.Instance.gameManager.GetFirstPlayerId();
+
+        if (firstPlayerId == MainManager.Instance.currentUserId)
+        {
+            myTurn = true;
+        }
+        else
+        {
+            myTurn = false;
+        }
     }
 
     private void DrawCardFromDeck()
@@ -372,17 +384,21 @@ public class RoundLogic : MonoBehaviour
 
     public void OnClick()
     {
-        // if it's my turn {...}
-
-        MoveUnits();
-        if(Lane[Lane.Count - 2].GetComponent<LandStats>().player && Lane[Lane.Count-2].GetComponent<LandStats>().units.allUnits.Count != 0)
+        if (myTurn)
         {
-            AttackCastle();
-        }
-        DrawCardFromDeck();
+            MoveUnits();
+            if (Lane[Lane.Count - 2].GetComponent<LandStats>().player && Lane[Lane.Count - 2].GetComponent<LandStats>().units.allUnits.Count != 0)
+            {
+                AttackCastle();
+            }
+            DrawCardFromDeck();
 
-        Destroy(GameObject.Find("PlayerCastle").GetComponent<LandStats>());
-        GameObject.Find("PlayerCastle").AddComponent<LandStats>();
+            Destroy(GameObject.Find("PlayerCastle").GetComponent<LandStats>());
+            GameObject.Find("PlayerCastle").AddComponent<LandStats>();
+
+            MainManager.Instance.gameManager.SendMove(new Move { userId = MainManager.Instance.currentUserId, command = "ENDTURN", type="", cardId=0 });
+            myTurn = false;
+        }
 
         // block movement (besides spells?)
     }
