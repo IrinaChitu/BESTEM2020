@@ -70,13 +70,13 @@ public class DragDrop : MonoBehaviour, IPointerClickHandler
     {
         GameObject pawn = Instantiate(Character, new Vector2(0, 0), Quaternion.identity);
 
-        // get these fields from current card
-        pawn.GetComponent<Image>().sprite = Resources.Load<Sprite>("Characters/YumikoSplash");
+        Card card = this.GetComponent<CardScript>().card;
+        pawn.GetComponent<Image>().sprite = card.sprite;
 
         pawn.AddComponent<CharacterStats>();
 
         CharacterStats characterStats = pawn.GetComponent<CharacterStats>();
-        characterStats.ComponentConstructor("melee", 10, 10);
+        characterStats.ComponentConstructor(card.details, card.hpValue, card.dmgValue);
 
         pawn.transform.SetParent(dropZone.transform, false);
         Destroy(this.gameObject);

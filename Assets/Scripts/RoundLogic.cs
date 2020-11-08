@@ -334,10 +334,6 @@ public class RoundLogic : MonoBehaviour
             // advance only if next land is mine  or all enemy units are dead or go to fight
             if ((Lane[cell - 1].GetComponent<LandStats>().player && (Lane[cell].GetComponent<LandStats>().units.allUnits.Count == 0 || Lane[cell].GetComponent<LandStats>().player)) || Fight(cell) == 1)
             {
-                Debug.Log("Ce puii mei e: " + cell.ToString());
-                Debug.Log(Lane[cell].GetComponent<LandStats>().player);
-                Debug.Log(Lane[cell].GetComponent<LandStats>().units.allUnits.Count);
-                Debug.Log("MEELS");
                 // advance all units from one land to another
                 if (cell > 0)
                 {
@@ -352,7 +348,6 @@ public class RoundLogic : MonoBehaviour
                 }
             }
         }
-        Debug.Log("MARIAN@");
     }
 
     private void AttackCastle()
@@ -362,10 +357,14 @@ public class RoundLogic : MonoBehaviour
         string HP = GameObject.Find("EnemyHero").GetComponentInChildren<TMPro.TextMeshProUGUI>().text;
         int heroHP = Convert.ToInt32(HP.Split(' ')[1]);
 
-        if (heroHP > totalDamage)
+        Debug.Log($"HP: {heroHP}; totalDmg: {totalDamage}");
+        heroHP -= totalDamage;
+        if (heroHP > 0)
         {
-            heroHP -= totalDamage;
             GameObject.Find("EnemyHero").GetComponentInChildren<TMPro.TextMeshProUGUI>().text = $"HP: {heroHP} / TotalHP: 15"; // TBD
+        } else
+        {
+            Debug.Log("Victory!");
         }
 
     }

@@ -36,7 +36,8 @@ public class InventoryManager : MonoBehaviour
                     case "icon":
                         card.sprite = Resources.Load<Sprite>("Characters/" + (string)pair.Value);
                         break;
-                    case "type": // todo: implement
+                    case "type":
+                        card.details = (string)pair.Value;
                         break;
                     case "dmg":
                         card.dmgValue = System.Convert.ToInt32(pair.Value);
@@ -126,7 +127,8 @@ public class InventoryManager : MonoBehaviour
         }
         Dictionary<string, object> deck = new Dictionary<string, object>
         {
-            { "cards", selectedCards.ToArray() }
+            { "cards", selectedCards.ToArray() },
+            { "selected", false }
         };
         Debug.Log(deck);
         DocumentReference addedDocRef = await MainManager.Instance.firebaseManager.firestore.Collection("users").Document(MainManager.Instance.currentUserId).Collection("decks").AddAsync(deck);

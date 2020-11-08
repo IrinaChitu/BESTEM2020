@@ -8,6 +8,8 @@ public class DeckScript : MonoBehaviour
     public GameObject grid;
     public TMPro.TextMeshProUGUI title;
     public string deckId;
+    public GameObject selectButton;
+
     private GameObject cardPreview;
 
     public void Init(string name, List<Card> cards)
@@ -27,5 +29,10 @@ public class DeckScript : MonoBehaviour
     public void DeleteDeck()
     {
         gameObject.transform.parent.gameObject.GetComponent<LoadDeckManager>().ClearDeck(deckId);
+    }
+
+    public void UpdateSelected()
+    {
+        gameObject.transform.parent.gameObject.GetComponent<LoadDeckManager>().UpdateSelected(deckId);
     }
 }

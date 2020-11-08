@@ -2269,6 +2269,7 @@ GameObject:
   - component: {fileID: 1930425689}
   - component: {fileID: 1930425691}
   - component: {fileID: 1930425690}
+  - component: {fileID: 1930425692}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -2332,6 +2333,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1930425688}
   m_CullTransparentMesh: 0
+--- !u!114 &1930425692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930425688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09b974cb0378faf4faa57550f240a375, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardObject: {fileID: 137927813701603789, guid: fd053ae763753f348a8bfb10ea4e07dc,
+    type: 3}
+  PlayerArea: {fileID: 694717188}
+  EnemyArea: {fileID: 1521729760}
+  previousDeck: 
 --- !u!1 &1946541828
 GameObject:
   m_ObjectHideFlags: 0
@@ -2472,14 +2490,13 @@ GameObject:
   - component: {fileID: 1980476432}
   - component: {fileID: 1980476431}
   - component: {fileID: 1980476430}
-  - component: {fileID: 1980476433}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1980476429
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2543,7 +2560,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1980476433}
+      - m_Target: {fileID: 0}
         m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
@@ -2591,22 +2608,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1980476428}
   m_CullTransparentMesh: 0
---- !u!114 &1980476433
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1980476428}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09b974cb0378faf4faa57550f240a375, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cardObject: {fileID: 137927813701603789, guid: fd053ae763753f348a8bfb10ea4e07dc,
-    type: 3}
-  PlayerArea: {fileID: 694717188}
-  EnemyArea: {fileID: 1521729760}
 --- !u!224 &2032097770 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 702219652215644491, guid: ed4ebf14a34a2d941ba87a6f0bd55f50,
