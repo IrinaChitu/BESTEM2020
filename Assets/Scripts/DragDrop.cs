@@ -50,6 +50,33 @@ public class DragDrop : MonoBehaviour, IPointerClickHandler
         isDragging = true;
     }
 
+    public class CharacterStats : MonoBehaviour
+    {
+        public string type;
+        public int hpValue;
+        public int dmgValue;
+
+        public void ComponentConstructor(string type, int hpValue, int dmgValue)
+        {
+            this.type = type;
+            this.hpValue = hpValue;
+            this.dmgValue = dmgValue;
+        }
+    }
+
+    public void CreateCharacterFromCard()
+    {
+        GameObject pawn = Instantiate(Character, new Vector2(0, 0), Quaternion.identity);
+
+        // get these fields from current card
+        pawn.GetComponent<Image>().sprite = Resources.Load<Sprite>("Characters/YumikoSplash");
+
+        pawn.AddComponent<CharacterStats>();
+        pawn.GetComponent<CharacterStats>().ComponentConstructor("melee", 10, 10);
+
+        pawn.transform.SetParent(dropZone.transform, false);
+        Destroy(this.gameObject);
+    }
 
     public void EndDrag()
     {
@@ -60,11 +87,7 @@ public class DragDrop : MonoBehaviour, IPointerClickHandler
             {
                 if (dropZone.transform.childCount < 9)
                 {
-                    GameObject pawn = Instantiate(Character, new Vector2(0, 0), Quaternion.identity);
-                    pawn.GetComponent<Image>().sprite = Resources.Load<Sprite>("Characters/YumikoSplash"); // get this from current card instead of dirrectly from assets
-                    //pawn.tag = "Player"; // used to check for battles
-                    pawn.transform.SetParent(dropZone.transform, false);
-                    Destroy(this.gameObject);
+                    CreateCharacterFromCard();
 
                 } else // there is no place in the Castle
                 {
